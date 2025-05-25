@@ -29,18 +29,18 @@ test("it calls onUserAdd when the form is submitted", async () => {
   });
 
   //Simulate typing in a name
-  user.click(nameInput);
-  user.keyboard("Shubham"); //type
+  await user.click(nameInput);
+  await user.keyboard("Shubham"); //type
 
   //simulated typical in an email
-  user.click(emailInput);
-  user.keyboard("test@test.com");
+  await user.click(emailInput);
+  await user.keyboard("test@test.com");
 
   //find the button
   const button = screen.getByRole("button");
 
   //simulate clicking the button
-  user.click(button);
+  await user.click(button);
 
   //assertion to make sure 'onUserAdd' gets called with email/name
   expect(mock).toHaveBeenCalled();
@@ -48,4 +48,25 @@ test("it calls onUserAdd when the form is submitted", async () => {
     name: "Shubham",
     email: "test@test.com",
   });
+});
+
+test("empties the inputs after form submission", async () => {
+  render(<UserForm onUserAdd={() => {}} />);
+
+  const nameInput = screen.getByRole("textbox", {
+    name: /name/i,
+  });
+  const emailInput = screen.getByRole("textbox", {
+    name: /email/i,
+  });
+  const button = screen.getByRole("button");
+
+  await user.click(nameInput);
+  await user.keyboard("Shubham");
+  await user.click(emailInput);
+  await user.keyboard("tst@tst.com");
+  await user.click(button);
+
+  expect(nameInput).toHaveValue("");
+  expect(emailInput).toHaveValue("");
 });
