@@ -24,11 +24,3 @@ test("shows a link to the repository", async () => {
 
   await screen.findByRole("img", { name: "JavaScript" });
 });
-
-const pause = () => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve();
-    }, 100);
-  });
-};
